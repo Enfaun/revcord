@@ -23,43 +23,13 @@ async function formatMessage(revolt: RevoltClient, message: Message) {
   let content = message.content.toString();
 
   // Handle pings
-  const pings = content.match(RevoltPingPattern);
-  if (pings && message.mentions) {
-    for (const ping of pings) {
-      const matched = RevoltPingPattern.exec(ping);
-      RevoltPingPattern.lastIndex = 0;
-
-      // Extract the mentioned member's ID and look for it in mentions
-      if (matched !== null) {
-        const id = matched.groups["id"];
-
-        if (id) {
-          const match = message.mentions.find((member) => member._id === id);
-
-          if (match) {
-            content = content.replace(ping, `@${match.username}`);
-          }
-        }
-      }
-    }
-  }
-
-  // Handle channel mentions
-  const channelMentions = content.match(RevoltChannelPattern);
-  if (channelMentions) {
-    for (const mention of channelMentions) {
-      const channel = RevoltChannelPattern.exec(mention);
-      RevoltChannelPattern.lastIndex = 0;
-
-      if (channel !== null) {
-        const channelId = channel.groups["id"];
-        if (channelId) {
-          try {
-            const channelData = await revolt.channels.fetch(channelId);
-            content = content.replace(mention, "#" + channelData.name);
-          } catch {}
-        }
-      }
+  if (message.mention_ids!=null) {
+    let client = message.client;
+    for(const user_id of message.mention_ids) {
+      let ping = `<@${user_id}>`;
+      let user = client.users.get(user_id);
+      if(user)
+        content = content.replace(ping, `@${user.username}`);
     }
   }
 
