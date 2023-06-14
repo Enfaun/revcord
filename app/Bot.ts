@@ -40,7 +40,7 @@ export class Bot {
 
   setupDiscordBot() {
     this.discord = new DiscordClient({
-      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
       allowedMentions: {
         parse: [],
       },
