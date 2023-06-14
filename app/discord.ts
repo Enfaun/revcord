@@ -144,7 +144,7 @@ export async function handleDiscordMessage(
       (!message.author.bot || target.allowBots)
     ) {
       // Prepare masquerade
-      let name = message.author.discriminator;
+      let name = message.author.username;
       if (message.author.discriminator!="0")
         name += "#" + message.author.discriminator;
       const mask = {
