@@ -1,4 +1,4 @@
-import { Client as DiscordClient, MessageEmbed, TextChannel, Webhook } from "discord.js";
+import { Client as DiscordClient, EmbedBuilder, TextChannel, Webhook, MessageFlags } from "discord.js";
 import npmlog from "npmlog";
 import { Client as RevoltClient } from "revolt.js";
 import { Message } from "revolt.js/dist/maps/Messages";
@@ -170,7 +170,7 @@ export async function handleRevoltMessage(
 
         let embed =
           reply &&
-          new MessageEmbed()
+          new EmbedBuilder()
             .setColor("#5875e8")
             .setAuthor({ name: reply.entity, iconURL: reply.entityImage });
 
@@ -224,7 +224,7 @@ export async function handleRevoltMessage(
  * @param content Target message content
  * @param username Username for webhook
  * @param avatarURL Avatar URL for webhook
- * @param embed Embed for webhook
+ * @param embed EmbedBuilder for webhook
  * @param allowUserPing Whether to allow user pings
  */
 export async function sendDiscordMessage(
@@ -233,7 +233,7 @@ export async function sendDiscordMessage(
   content: string,
   username: string,
   avatarURL: string,
-  embed: MessageEmbed,
+  embed: EmbedBuilder,
   allowUserPing: boolean
 ) {
   const webhookMessage = await webhook.send({
@@ -244,6 +244,9 @@ export async function sendDiscordMessage(
     allowedMentions: {
       parse: allowUserPing ? ["users"] : [],
     },
+    options: {
+      flags: MessageFlags.SuppressNotifications
+    }
   });
 
   Main.revoltCache.push({

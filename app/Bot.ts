@@ -1,4 +1,4 @@
-import { Client as DiscordClient, Collection, Intents } from "discord.js";
+import { Client as DiscordClient, Collection, GatewayIntentBits } from "discord.js";
 import { Client as RevoltClient } from "revolt.js";
 import { REST } from "@discordjs/rest";
 import npmlog from "npmlog";
@@ -40,7 +40,7 @@ export class Bot {
 
   setupDiscordBot() {
     this.discord = new DiscordClient({
-      intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES],
+      intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages],
       allowedMentions: {
         parse: [],
       },

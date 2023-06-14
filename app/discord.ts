@@ -1,11 +1,12 @@
 import {
-  AnyChannel,
+  BaseChannel, Channel,
   Client as DiscordClient,
   Collection,
   Message,
-  MessageAttachment,
+  Attachment,
   MessageMentions,
   TextChannel,
+  ChannelWebhookCreateOptions
 } from "discord.js";
 import npmlog from "npmlog";
 import { Client as RevoltClient } from "revolt.js";
@@ -32,7 +33,7 @@ import { checkWebhookPermissions } from "./util/permissions";
  * @returns Formatted string
  */
 function formatMessage(
-  attachments: Collection<string, MessageAttachment>,
+  attachments: Collection<string, Attachment>,
   content: string,
   mentions: MessageMentions,
   stickerUrl?: string
@@ -370,7 +371,7 @@ export async function handleDiscordMessageDelete(
  * @param mapping A mapping pair
  * @throws
  */
-export async function initiateDiscordChannel(channel: AnyChannel, mapping: Mapping) {
+export async function initiateDiscordChannel(channel: Channel, mapping: Mapping) {
   if (channel instanceof TextChannel) {
     await checkWebhookPermissions(channel);
 
@@ -383,7 +384,8 @@ export async function initiateDiscordChannel(channel: AnyChannel, mapping: Mappi
       npmlog.info("Discord", "Creating webhook for Discord#" + channel.name);
 
       // No webhook found, create one
-      webhook = await channel.createWebhook("revcord-" + mapping.revolt);
+      let options:ChannelWebhookCreateOptions  = {"name": "revcord-" + mapping.revolt};
+      webhook = await channel.createWebhook(options);
     }
 
     Main.webhooks.push(webhook);
@@ -393,7 +395,7 @@ export async function initiateDiscordChannel(channel: AnyChannel, mapping: Mappi
 /**
  * Unregister a Discord channel (when disconnecting)
  */
-export async function unregisterDiscordChannel(channel: AnyChannel, mapping: Mapping) {
+export async function unregisterDiscordChannel(channel: Channel, mapping: Mapping) {
   if (channel instanceof TextChannel) {
     await checkWebhookPermissions(channel);
 

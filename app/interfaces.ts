@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from "@discordjs/builders";
 import {
   Collection,
   CommandInteraction,
-  MessageAttachment,
+  Attachment,
   MessageMentions,
   User,
 } from "discord.js";
@@ -54,7 +54,7 @@ export interface CachedMessage {
 
 export interface PartialDiscordMessage {
   author: User;
-  attachments: Collection<string, MessageAttachment>;
+  attachments: Collection<string, Attachment>;
   channelId: string;
   content: string;
   id: string;

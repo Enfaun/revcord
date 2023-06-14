@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "module": "es2015",
+        "module": "es2020",
         "baseUrl": "./",
         "outDir": "build",
-        "target": "es6",
+        "target": "es2020",
         "allowJs": true,
         "checkJs": true,
         "esModuleInterop": true,

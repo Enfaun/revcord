@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { EmbedBuilder, Embed } from "discord.js";
 import type { SendableEmbed } from "revolt-api";
 
 interface Field {
@@ -20,7 +20,7 @@ export class RevcordEmbed {
 
   fields: Field[];
 
-  fromDiscord(embed: MessageEmbed) {
+  fromDiscord(embed: Embed) {
     if (embed.title) {
       this.title = embed.title;
 
@@ -42,11 +42,11 @@ export class RevcordEmbed {
         this.color = embed.hexColor;
       }
 
-      if (embed.footer && embed.footer.text) {
-        this.footer = embed.footer.text;
+      if (embed.data.footer && embed.data.footer.text) {
+        this.footer = embed.data.footer.text;
       }
 
-      this.fields = embed.fields.map((field) => ({
+      this.fields = embed.data.fields.map((field) => ({
         name: field.name,
         content: field.value,
       }));
@@ -68,8 +68,8 @@ export class RevcordEmbed {
 
     // I can't think of a better way to do this, so the image
     // will override the thumbnail.
-    //if (embed.thumbnail) revoltEmbed.media = embed.thumbnail.url;
-    //if (embed.image) revoltEmbed.media = embed.image.url;
+    //if (embed.data.thumbnail) revoltEmbed.media = embed.data.thumbnail.url;
+    //if (embed.data.image) revoltEmbed.media = embed.data.image.url;
     // This causes 400 for some reason.
     // update: it seems the url has to be hosted on autumn. too lazy to do that :trol:
     if (this.url) result.url = this.url;

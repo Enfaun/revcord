@@ -1,4 +1,4 @@
-import { AnyChannel, TextChannel } from "discord.js";
+import { PermissionFlagsBits, TextChannel } from "discord.js";
 import { InsufficientPermissionsError } from "../errors";
 
 /**
@@ -9,9 +9,9 @@ import { InsufficientPermissionsError } from "../errors";
 export async function checkWebhookPermissions(channel: TextChannel) {
   // Server-wide permission check
   if (
-    !channel.guild.me.permissions.has("MANAGE_WEBHOOKS") ||
-    !channel.guild.me.permissions.has("SEND_MESSAGES") ||
-    !channel.guild.me.permissions.has("VIEW_CHANNEL")
+    !channel.guild.members.me.permissions.has(PermissionFlagsBits.ManageWebhooks) ||
+    !channel.guild.members.me.permissions.has(PermissionFlagsBits.SendMessages) ||
+    !channel.guild.members.me.permissions.has(PermissionFlagsBits.ViewChannel)
   ) {
     throw new InsufficientPermissionsError(
       "Bot doesn't have sufficient permissions in server " +
@@ -22,7 +22,7 @@ export async function checkWebhookPermissions(channel: TextChannel) {
   }
 
   // Channel-specific permission check
-  if (!channel.guild.me.permissionsIn(channel).has("MANAGE_WEBHOOKS")) {
+  if (!channel.guild.members.me.permissionsIn(channel).has(PermissionFlagsBits.ManageWebhooks)) {
     throw new InsufficientPermissionsError(
       "Bot doesn't have sufficient permission in the channel. " +
         "Please check if the `Manage Webhooks` permission isn't being overridden" +
