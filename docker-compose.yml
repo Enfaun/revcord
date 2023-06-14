@@ -2,9 +2,7 @@ version: "3.7"
 
 services:
   revcord:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: "ghcr.io/enfaun/revcord:mod"
     volumes:
       - ./revcord.sqlite:/app/revcord.sqlite:rw
       - ./.env:/app/.env
