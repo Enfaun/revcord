@@ -33,12 +33,12 @@ async function formatMessage(revolt: RevoltClient, message: Message) {
     }
   }
 
-  messageString += content + "\n";
+  messageString += content;
 
   // Handle attachments
   if (message.attachments !== null) {
     message.attachments.forEach((attachment) => {
-      messageString += revolt.generateFileURL(attachment) + "\n";
+      messageString += "\n" + revolt.generateFileURL(attachment);
     });
   }
 

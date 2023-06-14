@@ -111,13 +111,13 @@ function formatMessage(
     }
   }
 
-  messageString += content + "\n";
+  messageString += content;
 
   attachments.forEach((attachment) => {
-    messageString += attachment.url + "\n";
+    messageString += "\n" + attachment.url;
   });
 
-  if (stickerUrl) messageString += stickerUrl + "\n";
+  if (stickerUrl) messageString += "\n" + stickerUrl;
 
   return messageString;
 }
