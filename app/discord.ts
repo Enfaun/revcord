@@ -91,7 +91,7 @@ function formatMessage(
           if (match) {
             content = content.replace(
               ping,
-              `[@${match.user.username}#${match.user.discriminator}]()`
+              `[@${match.user.username}]()`
             );
           }
         }
@@ -144,11 +144,8 @@ export async function handleDiscordMessage(
       (!message.author.bot || target.allowBots)
     ) {
       // Prepare masquerade
-      let name = message.author.username;
-      if (message.author.discriminator!="0")
-        name += "#" + message.author.discriminator;
       const mask = {
-        name: name,
+        name: message.author.username,
         avatar: message.author.avatarURL(),
       };
 
@@ -201,7 +198,7 @@ export async function handleDiscordMessage(
                 replyEmbed = {
                   pingable: false,
                   entity:
-                    referenced.author.username + "#" + referenced.author.discriminator,
+                    referenced.author.username,
                   entityImage: referenced.author.avatarURL(),
                   content: formattedContent,
                   attachments: [],

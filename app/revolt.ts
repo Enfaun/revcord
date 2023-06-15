@@ -101,9 +101,7 @@ export async function handleRevoltMessage(
             const replyObject: ReplyObject = {
               pingable: false,
               entity:
-                referencedMessage.author.username +
-                "#" +
-                referencedMessage.author.discriminator,
+                referencedMessage.author.username,
               entityImage: referencedMessage.author.avatarURL(),
               content: referencedMessage.content,
               originalUrl: referencedMessage.url,
@@ -154,7 +152,7 @@ export async function handleRevoltMessage(
             embed?.setDescription(`**Reply to**: ` + reply.content);
           }
         } else if (reply && reply.originalUrl) {
-          embed?.setDescription(`[**Reply to**](${reply.originalUrl})`);
+          embed?.setDescription(`**[Reply to](${reply.originalUrl})**`);
         }
 
         // Add attachments field
