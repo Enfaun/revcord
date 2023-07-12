@@ -1,5 +1,6 @@
 import { Embed } from "discord.js";
 import type { SendableEmbed } from "revolt-api";
+import { fitOrEmpty, truncate } from "./truncate";
 
 interface Field {
   name: string;
@@ -7,7 +8,7 @@ interface Field {
 }
 
 export class RevcordEmbed {
-  constructor() { }
+  constructor() {}
 
   title: string;
   content: string;
@@ -23,36 +24,36 @@ export class RevcordEmbed {
   fromDiscord(embed: Embed) {
     if (embed.title) {
       this.title = embed.title;
-
-      if (embed.url) this.url = embed.url;
-
-      if (embed.description) {
-        this.description = embed.description;
-      }
-
-      if (embed.author && embed.author.iconURL) {
-        this.iconURL = embed.author.iconURL;
-      }
-
-      if (embed.author && embed.author.name) {
-        this.author = embed.author.name;
-      }
-
-      if (embed.hexColor) {
-        this.color = embed.hexColor;
-      }
-
-      if (embed.footer && embed.footer.text) {
-        this.footer = embed.footer.text;
-      }
-
-      this.fields = embed.fields.map((field) => ({
-        name: field.name,
-        content: field.value,
-      }));
-
-      return this;
     }
+
+    if (embed.url) this.url = embed.url;
+
+    if (embed.description) {
+      this.description = embed.description;
+    }
+
+    if (embed.author && embed.author.iconURL) {
+      this.iconURL = embed.author.iconURL;
+    }
+
+    if (embed.author && embed.author.name) {
+      this.author = embed.author.name;
+    }
+
+    if (embed.hexColor) {
+      this.color = embed.hexColor;
+    }
+
+    if (embed.footer && embed.footer.text) {
+      this.footer = embed.footer.text;
+    }
+
+    this.fields = embed.fields.map((field) => ({
+      name: field.name,
+      content: field.value,
+    }));
+
+    return this;
   }
 
   // Creates a Revolt embed
@@ -63,7 +64,7 @@ export class RevcordEmbed {
 
     // Apply title
     if (this.title) {
-      content += "### " + this.title + "\n\n";
+      result.title = truncate(this.title, 100);
     }
 
     // I can't think of a better way to do this, so the image
@@ -76,11 +77,9 @@ export class RevcordEmbed {
 
     if (this.description) content += this.description + "\n\n";
 
-    if (this.author) result.title = this.author;
+    if (this.iconURL) result.icon_url = fitOrEmpty(this.iconURL, 128);
 
-    if (this.iconURL) result.icon_url = this.iconURL;
-
-    if (this.color) result.colour = this.color;
+    if (this.color) result.colour = fitOrEmpty(this.color, 128);
 
     if (this.footer) content += "\n> " + this.footer + "\n";
 
@@ -97,7 +96,8 @@ export class RevcordEmbed {
       content += fieldContent + "\n";
     });
 
-    result.description = content;
+    // the offset is required for some reason. this needs to be investigated further
+    result.description = truncate(content, 1900);
 
     return result;
   }
